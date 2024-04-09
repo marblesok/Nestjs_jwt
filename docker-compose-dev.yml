@@ -1,0 +1,26 @@
+version: '3.5'
+
+services:
+  app:
+    container_name: 'api-service-dev'
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: >
+      sh -c "yarn && npm run start:dev"
+    ports: 
+      - '3030:3030'
+  mysqldb:
+    container_name: 'mysqldb'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'test'
+      MYSQL_DATABASE: 'test'
+    image: mysql
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mysql_volume:/var/lib/mysql
