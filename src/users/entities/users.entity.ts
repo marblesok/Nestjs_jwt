@@ -9,7 +9,7 @@ export enum UserStatus {
 }
 
 @Entity('user')
-export class User extends WithTimestamp{
+export class User extends WithTimestamp {
     @Column({ type: 'varchar' })
     loginId: string
 

@@ -2,8 +2,8 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { UserCreateDto } from './users.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User, UserStatus } from './entities/users.entity';
 import * as bcrypt from 'bcrypt';
+import { User } from './entities/users.entity';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +14,7 @@ export class UsersService {
 
     async create(userCreateDto: UserCreateDto){
         const { loginId, password, name } = userCreateDto;
-        const user = await this.findById(loginId);
+        const user = await this.findByLoginId(loginId);
         if(user) {
             throw new HttpException(
                 '이미 존재하는 아이디입니다.',
@@ -31,10 +31,18 @@ export class UsersService {
         return { message: '회원가입 되었습니다.', status: 1 }
     }
 
-    async findById(loginId: string) {
+    async findByLoginId(loginId: string){
         return await this.userRepository.findOne({
             where: {
                 loginId,
+            }
+        })
+    }
+
+    async findById(id: number) {
+        return await this.userRepository.findOne({
+            where: {
+                id,
             }
         })
     }
