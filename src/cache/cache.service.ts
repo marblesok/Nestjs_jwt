@@ -1,9 +1,11 @@
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
 
 @Injectable()
-export class RedisService {
+export class CacheService {
     constructor(
+        @InjectRedis()
         private readonly redis: Redis,
     ){}
 
@@ -11,7 +13,7 @@ export class RedisService {
         await this.redis.set(key, data);
     }
     async get(key: string){
-        await this.redis.get(key);
+        return await this.redis.get(key);
     }
 }
 

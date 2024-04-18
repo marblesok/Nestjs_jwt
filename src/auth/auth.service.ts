@@ -3,6 +3,7 @@ import { AuthLoginDto } from './auth.dto';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { CacheService } from 'src/cache/cache.service';
 
 @Injectable()
 export class AuthService {
@@ -10,12 +11,10 @@ export class AuthService {
         private readonly userService: UsersService,
         private readonly jwtService: JwtService,
         private readonly configService: ConfigService,
+        private readonly cacheService: CacheService
     ){}
 
     async login(authLoginDto: AuthLoginDto){
-        // await this.redisService.set('dsd','ds');
-        // const test = this.redisService.get('dsd')
-        // console.log(test);
         const { loginId, password } = authLoginDto;
         const user = await this.userService.findByLoginId(loginId);
         if(!user) {
