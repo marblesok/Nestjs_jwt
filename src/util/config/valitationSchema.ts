@@ -10,4 +10,6 @@ export const validationSchema = Joi.object({
     MYSQL_PASSWORD: Joi.string().required(),
     MYSQL_DATABASE: Joi.string().required(),
     MYSQL_PORT: Joi.number().required(),
+    REDIS_HOST: Joi.string().required(),
+    REDIS_PORT: Joi.number().required(),
 }); 

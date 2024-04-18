@@ -3,7 +3,7 @@
 /node_modules
 /build
 /mysql_volume
-
+/redis
 # Logs
 logs
 *.log

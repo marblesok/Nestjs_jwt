@@ -2,7 +2,6 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { AuthLoginDto } from './auth.dto';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/entities/users.entity';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -10,10 +9,13 @@ export class AuthService {
     constructor(
         private readonly userService: UsersService,
         private readonly jwtService: JwtService,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
     ){}
 
     async login(authLoginDto: AuthLoginDto){
+        // await this.redisService.set('dsd','ds');
+        // const test = this.redisService.get('dsd')
+        // console.log(test);
         const { loginId, password } = authLoginDto;
         const user = await this.userService.findByLoginId(loginId);
         if(!user) {

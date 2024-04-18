@@ -14,4 +14,7 @@ export const load = () => ({
 
     jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
     jwt_refresh_expiration_time: process.env.JWT_REFRESH_EXPIRATION_TIME,
+
+    redis_host: process.env.REDIS_HOST,
+    redis_port: process.env.REDIS_PORT,
 })
