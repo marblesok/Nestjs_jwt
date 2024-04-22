@@ -12,8 +12,13 @@ export class CacheService {
     async set(key: string, data: any){
         await this.redis.set(key, data);
     }
+
     async get(key: string){
         return await this.redis.get(key);
+    }
+    
+    async del(key: string){
+        await this.redis.del(key);
     }
 }
 

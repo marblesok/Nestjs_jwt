@@ -4,6 +4,7 @@ import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { CacheService } from 'src/cache/cache.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -37,17 +38,26 @@ export class AuthService {
                 loginId: user.loginId,
             },
             access_token: await this.getAccessToken(user.id),
-            refresh_token: await this.getRefreshToken(user.id, user.name),
+            refresh_token: await this.getRefreshToken(user.id),
         }
     }
 
+    async logout(id: number) {
+        await this.cacheService.del(`a_${id}`);
+        return { message: '로그아웃 되었습니다.', status: 1 }
+    }
+
     async getAccessToken(id: number){
-        const payload = { id };
+        const uuid = uuidv4();
+        const payload = { id, uuid };
+        await this.cacheService.set(`a_${id}`, uuid);
         return await this.jwtService.signAsync( payload );
     }
 
-    async getRefreshToken(id: number, name: string){
-        const payload = { id, name }
+    async getRefreshToken(id: number){
+        const uuid = uuidv4();
+        const payload = { id, uuid };
+        await this.cacheService.set(`r_${id}`, uuid)
         return await this.jwtService.signAsync( payload, {
             secret: this.configService.get('JWT_REFRESH_SECRET'),
             expiresIn: this.configService.get('JWT_REFRESH_EXPIRATION_TIME'),
